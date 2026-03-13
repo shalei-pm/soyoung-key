@@ -6,6 +6,23 @@
     <title>新氧青春 - API Key 管理</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary-green);
+            color: white;
+        }
+
         :root {
             --primary-green: #8FE83E;
             --primary-green-light: #B8F273;
@@ -500,6 +517,12 @@
                 </div>
                 <div class="logo-text">SOYOUNG <span>CLINIC</span></div>
             </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">首页</a>
+                <a href="login.html">登录</a>
+                <a href="login-animated.html">动画登录</a>
+                <a href="key-management.html">Key管理</a>
+            </nav>
         </header>
 
         <div class="main-content">
