@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新氧青春 - 登录</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #8FE83E;
+            --primary-green-light: #B8F273;
+            --primary-green-dark: #6BC72E;
+            --white: #FFFFFF;
+            --light-gray: #F5F7FA;
+            --light-gray-2: #F0F4EF;
+            --dark-gray: #2D3436;
+            --medium-gray: #636E72;
+            --beige: #E8E4DC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        /* 左侧品牌区 */
+        .brand-side {
+            background: var(--primary-green);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255,255,255,0.05) 20px,
+                rgba(255,255,255,0.05) 40px
+            );
+            animation: move 30s linear infinite;
+        }
+
+        @keyframes move {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(0%, 0%); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after,
+        .logo-icon span {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: var(--white);
+        }
+
+        .logo-icon::before {
+            width: 24px;
+            height: 24px;
+            top: 0;
+            left: 0;
+        }
+
+        .logo-icon::after {
+            width: 16px;
+            height: 16px;
+            top: 10px;
+            left: 12px;
+            opacity: 0.8;
+        }
+
+        .logo-icon span {
+            width: 10px;
+            height: 10px;
+            top: 20px;
+            left: 24px;
+            opacity: 0.6;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--white);
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .brand-content p {
+            font-size: 20px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .brand-tagline {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 右侧登录区 */
+        .login-side {
+            background: var(--white);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 420px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+
+        .login-card .subtitle {
+            font-size: 16px;
+            color: var(--medium-gray);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            background: var(--light-gray);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(143, 232, 62, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--medium-gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 18px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            color: var(--dark-gray);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(143, 232, 62, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 32px 0;
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E0E0E0;
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        .oauth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .oauth-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--white);
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .oauth-btn:hover {
+            border-color: var(--primary-green);
+            background: var(--light-gray-2);
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            font-size: 13px;
+            color: var(--medium-gray);
+            text-align: center;
+        }
+
+        .footer-note a {
+            color: var(--primary-green-dark);
+            text-decoration: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-side {
+                display: none;
+            }
+            
+            .login-side {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧品牌区 -->
+        <div class="brand-side">
+            <div class="logo">
+                <div class="logo-icon">
+                    <span></span>
+                </div>
+                <div class="logo-text">SOYOUNG CLINIC</div>
+            </div>
+
+            <div class="brand-content">
+                <h1>API Key 管理平台</h1>
+                <p>新氧青春 × OpenClaw<br>智能医美解决方案</p>
+            </div>
+
+            <div class="brand-tagline">Genuine Care, Nature Beauty</div>
+        </div>
+
+        <!-- 右侧登录区 -->
+        <div class="login-side">
+            <div class="login-card">
+                <h2>欢迎回来</h2>
+                <p class="subtitle">登录以管理您的 API Keys</p>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" id="email" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="password" placeholder="输入密码" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        登录
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>或</span>
+                </div>
+
+                <div class="oauth-buttons">
+                    <button class="oauth-btn" onclick="handleOAuth('feishu')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <rect width="24" height="24" rx="4" fill="#4A90E2"/>
+                            <path d="M12 6C8.686 6 6 8.686 6 12s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z" fill="white"/>
+                        </svg>
+                        飞书登录
+                    </button>
+                    <button class="oauth-btn" onclick="handleOAuth('wechat')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <rect width="24" height="24" rx="4" fill="#07C160"/>
+                            <path d="M8.5 14c-1.38 0-2.5 1.12-2.5 2.5S7.12 19 8.5 19s2.5-1.12 2.5-2.5S9.88 14 8.5 14z" fill="white"/>
+                            <path d="M15.5 14c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5z" fill="white"/>
+                            <circle cx="8.5" cy="10" r="1.5" fill="white"/>
+                            <circle cx="15.5" cy="10" r="1.5" fill="white"/>
+                        </svg>
+                        微信登录
+                    </button>
+                </div>
+
+                <p class="footer-note">
+                    还没有账号？<a href="#">立即注册</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            // 模拟登录成功，实际应该调用后端API
+            const user = {
+                name: '凯撒',
+                email: 'shalei@soyoung.com',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kaisa'
+            };
+            
+            // 存储用户信息到 localStorage
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            // 跳转到 Key 管理页面
+            window.location.href = 'key-management.html';
+        }
+
+        function handleOAuth(provider) {
+            alert('正在跳转到 ' + provider + ' 授权...');
+            // 实际应该调用 OAuth 授权流程
+        }
+    </script>
+</body>
+</html>

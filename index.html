@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新氧青春 - API Key 管理</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #8FE83E;
+            --primary-green-light: #B8F273;
+            --primary-green-dark: #6BC72E;
+            --white: #FFFFFF;
+            --light-gray: #F5F7FA;
+            --dark-gray: #2D3436;
+            --medium-gray: #636E72;
+            --yellow-accent: #FFE066;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #F8FFF4 0%, #E8FFE4 50%, #F0FFF0 100%);
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 60px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after,
+        .logo-icon span {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary-green);
+        }
+
+        .logo-icon::before {
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+        }
+
+        .logo-icon::after {
+            width: 14px;
+            height: 14px;
+            top: 8px;
+            left: 10px;
+            opacity: 0.7;
+        }
+
+        .logo-icon span {
+            width: 8px;
+            height: 8px;
+            top: 16px;
+            left: 20px;
+            opacity: 0.4;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--dark-gray);
+        }
+
+        .logo-text span {
+            color: var(--primary-green-dark);
+        }
+
+        /* 主内容区 - 左右布局 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 480px;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* 左侧品牌区 */
+        .brand-section {
+            padding-right: 40px;
+        }
+
+        .brand-hero {
+            margin-bottom: 40px;
+        }
+
+        .brand-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--dark-gray);
+            line-height: 1.2;
+        }
+
+        .brand-hero h1 span {
+            color: var(--primary-green-dark);
+        }
+
+        .brand-hero p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(143, 232, 62, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(143, 232, 62, 0.15);
+            border-color: var(--primary-green);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-green-light), var(--primary-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--dark-gray);
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--medium-gray);
+            line-height: 1.5;
+        }
+
+        .brand-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, var(--primary-green-light) 0%, var(--primary-green) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255,255,255,0.1) 20px,
+                rgba(255,255,255,0.1) 40px
+            );
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(0%, 0%); }
+        }
+
+        .brand-image-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--dark-gray);
+        }
+
+        .brand-image-text h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .brand-image-text p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* 右侧 Key 生成区 */
+        .key-generator {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 40px rgba(143, 232, 62, 0.15);
+            border: 1px solid rgba(143, 232, 62, 0.3);
+        }
+
+        .key-generator h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+
+        .key-generator .subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 15px;
+            background: var(--light-gray);
+            border: 1px solid rgba(143, 232, 62, 0.3);
+            border-radius: 12px;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 20px rgba(143, 232, 62, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: var(--medium-gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+            color: var(--dark-gray);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(143, 232, 62, 0.3);
+        }
+
+        .key-display {
+            margin-top: 28px;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .key-display.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .key-label {
+            font-size: 12px;
+            color: var(--medium-gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .key-value {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .key-value code {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(143, 232, 62, 0.15);
+            border: 1px solid rgba(143, 232, 62, 0.3);
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            color: var(--primary-green-dark);
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            padding: 12px 18px;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary-green-dark);
+        }
+
+        .keys-list {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(143, 232, 62, 0.2);
+        }
+
+        .keys-list h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--dark-gray);
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .key-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .key-item-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 2px;
+        }
+
+        .key-item-date {
+            font-size: 12px;
+            color: var(--medium-gray);
+        }
+
+        .key-item-key {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            color: var(--medium-gray);
+            margin-right: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .btn-delete {
+            padding: 6px 12px;
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid rgba(255, 82, 82, 0.2);
+            border-radius: 6px;
+            color: #ff5252;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 82, 82, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+
+        .glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(143, 232, 62, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glow-2 {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(143, 232, 62, 0.1) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .brand-section {
+                padding-right: 0;
+            }
+            
+            .key-generator {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <span></span>
+                </div>
+                <div class="logo-text">SOYOUNG <span>CLINIC</span></div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧品牌区 -->
+            <div class="brand-section">
+                <div class="brand-hero">
+                    <h1>新氧青春 × <span>OpenClaw</span></h1>
+                    <p>全面接入 OpenClaw 智能助手，让医美服务更智能、更高效、更懂你</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <h3>智能问答</h3>
+                        <p>基于 AI 大模型，快速响应客户咨询，提供专业医美建议</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3>个性化推荐</h3>
+                        <p>根据用户画像，智能推荐适合的医美方案和产品</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                            </svg>
+                        </div>
+                        <h3>内容生成</h3>
+                        <p>自动生成营销文案、种草笔记、科普文章</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                <path d="M22 4L12 14.01l-3-3"/>
+                            </svg>
+                        </div>
+                        <h3>全流程覆盖</h3>
+                        <p>从咨询到预约到术后，全链路 AI 赋能</p>
+                    </div>
+                </div>
+
+                <div class="brand-image">
+                    <div class="brand-image-text">
+                        <h2>AI 赋能医美</h2>
+                        <p>让每一位用户绽放美丽</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧 Key 生成区 -->
+            <div class="key-generator">
+                <h2>API Key 管理</h2>
+                <p class="subtitle">生成和管理您的 API 访问密钥</p>
+
+                <div class="form-group">
+                    <label>应用名称</label>
+                    <input type="text" id="appName" placeholder="输入应用名称，例如：我的应用">
+                </div>
+                
+                <div class="form-group">
+                    <label>使用场景（可选）</label>
+                    <input type="text" id="usage" placeholder="描述这个 Key 的使用场景">
+                </div>
+
+                <button class="btn btn-primary" onclick="generateKey()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    生成 API Key
+                </button>
+
+                <div class="key-display" id="keyDisplay">
+                    <div class="key-label">新生成的 API Key</div>
+                    <div class="key-value">
+                        <code id="newKey">sk-xxxx xxxx xxxx xxxx</code>
+                        <button class="btn-copy" onclick="copyKey()">复制</button>
+                    </div>
+                </div>
+
+                <div class="keys-list">
+                    <h3>我的 API Keys</h3>
+                    <div id="keysContainer">
+                        <!-- 动态生成的 Key 列表将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 新氧青春 SOYOUNG CLINIC. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 模拟存储的 keys
+        let apiKeys = [
+            { id: 1, name: '测试应用', usage: '开发测试', key: 'sk-yc-test-xxxxx-xxxxx', date: '2026-03-11' },
+            { id: 2, name: '生产环境', usage: '正式业务', key: 'sk-yc-prod-xxxxx-xxxxx', date: '2026-03-10' }
+        ];
+
+        function generateKey() {
+            const appName = document.getElementById('appName').value.trim();
+            const usage = document.getElementById('usage').value.trim();
+            
+            if (!appName) {
+                alert('请输入应用名称');
+                return;
+            }
+
+            // 生成随机 Key
+            const randomPart = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const newKey = `sk-yc-${randomPart.substring(0, 12)}-${randomPart.substring(12, 24)}`;
+            const today = new Date().toISOString().split('T')[0];
+
+            // 添加到列表
+            apiKeys.unshift({
+                id: Date.now(),
+                name: appName,
+                usage: usage || '未描述',
+                key: newKey,
+                date: today
+            });
+
+            // 显示新生成的 Key
+            document.getElementById('newKey').textContent = newKey;
+            document.getElementById('keyDisplay').classList.add('show');
+
+            // 重新渲染列表
+            renderKeys();
+
+            // 清空表单
+            document.getElementById('appName').value = '';
+            document.getElementById('usage').value = '';
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('newKey').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert('已复制到剪贴板');
+            });
+        }
+
+        function deleteKey(id) {
+            if (confirm('确定要删除这个 API Key 吗？')) {
+                apiKeys = apiKeys.filter(k => k.id !== id);
+                renderKeys();
+            }
+        }
+
+        function renderKeys() {
+            const container = document.getElementById('keysContainer');
+            container.innerHTML = apiKeys.map(k => `
+                <div class="key-item">
+                    <div class="key-item-info">
+                        <div class="key-item-name">${k.name}</div>
+                        <div class="key-item-date">${k.date} · ${k.usage}</div>
+                    </div>
+                    <code class="key-item-key">${k.key.substring(0, 20)}...</code>
+                    <button class="btn-delete" onclick="deleteKey(${k.id})">删除</button>
+                </div>
+            `).join('');
+        }
+
+        // 初始渲染
+        renderKeys();
+    </script>
+</body>
+</html>

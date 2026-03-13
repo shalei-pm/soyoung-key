@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新氧青春 - 登录</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #8FE83E;
+            --primary-green-light: #B8F273;
+            --primary-green-dark: #6BC72E;
+            --white: #FFFFFF;
+            --light-gray: #F5F7FA;
+            --dark-gray: #2D3436;
+            --medium-gray: #636E72;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        /* 左侧动画角色区 */
+        .brand-side {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px);
+            animation: bgMove 30s linear infinite;
+        }
+
+        @keyframes bgMove {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(0%, 0%); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after,
+        .logo-icon span {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: var(--white);
+        }
+
+        .logo-icon::before {
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+        }
+
+        .logo-icon::after {
+            width: 13px;
+            height: 13px;
+            top: 8px;
+            left: 10px;
+            opacity: 0.8;
+        }
+
+        .logo-icon span {
+            width: 8px;
+            height: 8px;
+            top: 16px;
+            left: 20px;
+            opacity: 0.6;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        /* 动画角色区域 */
+        .characters-area {
+            position: relative;
+            z-index: 10;
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .character {
+            position: absolute;
+            bottom: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: bottom center;
+        }
+
+        /* 紫色角色 - 最高 */
+        .char-purple {
+            left: 15%;
+            width: 100px;
+            height: 280px;
+            background: linear-gradient(180deg, #8B5CF6 0%, #6D28D9 100%);
+            border-radius: 20px 20px 0 0;
+            z-index: 2;
+        }
+
+        .char-purple .eyes {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .char-purple.blink .eyes {
+            top: 70px;
+            height: 4px;
+            overflow: hidden;
+        }
+
+        /* 深色角色 */
+        .char-dark {
+            left: 38%;
+            width: 80px;
+            height: 220px;
+            background: linear-gradient(180deg, #4B5563 0%, #1F2937 100%);
+            border-radius: 16px 16px 0 0;
+            z-index: 3;
+        }
+
+        .char-dark .eyes {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+        }
+
+        .char-dark.blink .eyes {
+            top: 54px;
+            height: 3px;
+            overflow: hidden;
+        }
+
+        /* 橙色角色 */
+        .char-orange {
+            left: 5%;
+            width: 120px;
+            height: 160px;
+            background: linear-gradient(180deg, #FB923C 0%, #EA580C 100%);
+            border-radius: 60px 60px 0 0;
+            z-index: 4;
+        }
+
+        .char-orange .eyes {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 24px;
+        }
+
+        /* 绿色角色 */
+        .char-green {
+            left: 58%;
+            width: 90px;
+            height: 180px;
+            background: linear-gradient(180deg, var(--primary-green-light) 0%, var(--primary-green-dark) 100%);
+            border-radius: 45px 45px 0 0;
+            z-index: 5;
+        }
+
+        .char-green .eyes {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 18px;
+        }
+
+        .char-green .mouth {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 4px;
+            background: var(--dark-gray);
+            border-radius: 2px;
+        }
+
+        /* 眼睛样式 */
+        .eye {
+            width: 28px;
+            height: 28px;
+            background: var(--white);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eye.small {
+            width: 22px;
+            height: 22px;
+        }
+
+        .pupil {
+            width: 12px;
+            height: 12px;
+            background: var(--dark-gray);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease-out;
+        }
+
+        .eye.small .pupil {
+            width: 10px;
+            height: 10px;
+        }
+
+        .pupil-only {
+            width: 14px;
+            height: 14px;
+            background: var(--dark-gray);
+            border-radius: 50%;
+        }
+
+        /* 底部信息 */
+        .brand-footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        /* 右侧登录区 */
+        .login-side {
+            background: var(--white);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+        }
+
+        .login-card .subtitle {
+            font-size: 16px;
+            color: var(--medium-gray);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 15px;
+            background: var(--light-gray);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(143, 232, 62, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--medium-gray);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--medium-gray);
+            padding: 4px;
+        }
+
+        .password-toggle:hover {
+            color: var(--dark-gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            color: var(--dark-gray);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(143, 232, 62, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 28px 0;
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E0E0E0;
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        .oauth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .oauth-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--white);
+            border: 1px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .oauth-btn:hover {
+            border-color: var(--primary-green);
+            background: var(--light-gray);
+        }
+
+        .footer-note {
+            margin-top: 32px;
+            font-size: 13px;
+            color: var(--medium-gray);
+            text-align: center;
+        }
+
+        .footer-note a {
+            color: var(--primary-green-dark);
+            text-decoration: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-side {
+                display: none;
+            }
+            
+            .login-side {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧动画角色区 -->
+        <div class="brand-side">
+            <div class="logo">
+                <div class="logo-icon">
+                    <span></span>
+                </div>
+                <div class="logo-text">SOYOUNG CLINIC</div>
+            </div>
+
+            <!-- 动画角色 -->
+            <div class="characters-area">
+                <!-- 紫色角色 -->
+                <div class="character char-purple" id="charPurple">
+                    <div class="eyes">
+                        <div class="eye"><div class="pupil"></div></div>
+                        <div class="eye"><div class="pupil"></div></div>
+                    </div>
+                </div>
+
+                <!-- 深色角色 -->
+                <div class="character char-dark" id="charDark">
+                    <div class="eyes">
+                        <div class="eye small"><div class="pupil"></div></div>
+                        <div class="eye small"><div class="pupil"></div></div>
+                    </div>
+                </div>
+
+                <!-- 橙色角色 -->
+                <div class="character char-orange" id="charOrange">
+                    <div class="eyes">
+                        <div class="pupil-only"></div>
+                        <div class="pupil-only"></div>
+                    </div>
+                </div>
+
+                <!-- 绿色角色 -->
+                <div class="character char-green" id="charGreen">
+                    <div class="eyes">
+                        <div class="pupil-only"></div>
+                        <div class="pupil-only"></div>
+                    </div>
+                    <div class="mouth"></div>
+                </div>
+            </div>
+
+            <div class="brand-footer">
+                GENUINE CARE, NATURE BEAUTY
+            </div>
+        </div>
+
+        <!-- 右侧登录区 -->
+        <div class="login-side">
+            <div class="login-card">
+                <h2>欢迎回来</h2>
+                <p class="subtitle">登录以管理您的 API Keys</p>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" id="email" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>密码</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" placeholder="输入密码" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        登录
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>或</span>
+                </div>
+
+                <div class="oauth-buttons">
+                    <button class="oauth-btn" onclick="handleOAuth('feishu')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <rect width="24" height="24" rx="4" fill="#4A90E2"/>
+                            <path d="M12 6C8.686 6 6 8.686 6 12s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z" fill="white"/>
+                        </svg>
+                        飞书登录
+                    </button>
+                    <button class="oauth-btn" onclick="handleOAuth('wechat')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <rect width="24" height="24" rx="4" fill="#07C160"/>
+                            <path d="M8.5 14c-1.38 0-2.5 1.12-2.5 2.5S7.12 19 8.5 19s2.5-1.12 2.5-2.5S9.88 14 8.5 14z" fill="white"/>
+                            <path d="M15.5 14c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5z" fill="white"/>
+                            <circle cx="8.5" cy="10" r="1.5" fill="white"/>
+                            <circle cx="15.5" cy="10" r="1.5" fill="white"/>
+                        </svg>
+                        微信登录
+                    </button>
+                </div>
+
+                <p class="footer-note">
+                    还没有账号？<a href="#">立即注册</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 鼠标位置
+        let mouseX = 0;
+        let mouseY = 0;
+        let isTyping = false;
+        let passwordVisible = false;
+
+        // 角色元素
+        const charPurple = document.getElementById('charPurple');
+        const charDark = document.getElementById('charDark');
+        const charOrange = document.getElementById('charOrange');
+        const charGreen = document.getElementById('charGreen');
+
+        // 监听鼠标移动
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            updateCharacters();
+        });
+
+        // 更新角色动画
+        function updateCharacters() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            
+            // 计算鼠标在左侧区域的比例
+            let leftRatio = 0;
+            if (screenWidth > 968) {
+                leftRatio = mouseX / (screenWidth / 2);
+            }
+
+            // 紫色角色 - 跟随鼠标倾斜
+            const purpleSkew = (leftRatio - 0.5) * 10;
+            charPurple.style.transform = `skewX(${purpleSkew}deg)`;
+            
+            // 更新紫色角色眼睛瞳孔
+            const purplePupils = charPurple.querySelectorAll('.pupil');
+            purplePupils.forEach(pupil => {
+                const offsetX = (mouseX / window.innerWidth - 0.5) * 6;
+                const offsetY = (mouseY / window.innerHeight - 0.5) * 6;
+                pupil.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+            });
+
+            // 深色角色
+            const darkSkew = (leftRatio - 0.5) * 8;
+            charDark.style.transform = `skewX(${darkSkew}deg)`;
+            
+            const darkPupils = charDark.querySelectorAll('.pupil');
+            darkPupils.forEach(pupil => {
+                const offsetX = (mouseX / window.innerWidth - 0.5) * 4;
+                const offsetY = (mouseY / window.innerHeight - 0.5) * 4;
+                pupil.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+            });
+
+            // 橙色角色
+            const orangeSkew = (leftRatio - 0.5) * 12;
+            charOrange.style.transform = `skewX(${orangeSkew}deg)`;
+
+            // 绿色角色
+            const greenSkew = (leftRatio - 0.5) * 6;
+            charGreen.style.transform = `skewX(${greenSkew}deg)`;
+        }
+
+        // 随机眨眼
+        function randomBlink(element, duration = 150) {
+            element.classList.add('blink');
+            setTimeout(() => {
+                element.classList.remove('blink');
+            }, duration);
+        }
+
+        // 定时眨眼
+        setInterval(() => {
+            randomBlink(charPurple);
+        }, 3000 + Math.random() * 4000);
+
+        setInterval(() => {
+            randomBlink(charDark);
+        }, 4000 + Math.random() * 3000);
+
+        // 密码输入监控
+        const passwordInput = document.getElementById('password');
+        const emailInput = document.getElementById('email');
+
+        emailInput.addEventListener('focus', () => {
+            isTyping = true;
+        });
+
+        emailInput.addEventListener('blur', () => {
+            isTyping = false;
+        });
+
+        passwordInput.addEventListener('focus', () => {
+            isTyping = true;
+        });
+
+        passwordInput.addEventListener('blur', () => {
+            isTyping = false;
+        });
+
+        // 切换密码显示
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            passwordVisible = !passwordVisible;
+            passwordInput.type = passwordVisible ? 'text' : 'password';
+            
+            if (passwordVisible) {
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+            } else {
+                eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+            }
+        }
+
+        // 处理登录
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 模拟登录
+            if (email && password) {
+                // 保存用户信息
+                const user = {
+                    name: '用户',
+                    email: email,
+                    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + email
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                // 跳转到 Key 管理页
+                window.location.href = 'key-management.html';
+            }
+        }
+
+        // OAuth 登录
+        function handleOAuth(provider) {
+            alert('正在跳转到 ' + provider + ' 授权...');
+        }
+    </script>
+</body>
+</html>

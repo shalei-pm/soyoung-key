@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新氧青春 - API Key 管理</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #8FE83E;
+            --primary-green-light: #B8F273;
+            --primary-green-dark: #6BC72E;
+            --white: #FFFFFF;
+            --light-gray: #F5F7FA;
+            --light-gray-2: #F0F4EF;
+            --dark-gray: #2D3436;
+            --medium-gray: #636E72;
+            --beige: #E8E4DC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 520px;
+            min-height: 100vh;
+        }
+
+        /* 左侧品牌区 */
+        .brand-side {
+            background: var(--primary-green);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255,255,255,0.05) 20px,
+                rgba(255,255,255,0.05) 40px
+            );
+            animation: move 30s linear infinite;
+        }
+
+        @keyframes move {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(0%, 0%); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after,
+        .logo-icon span {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: var(--white);
+        }
+
+        .logo-icon::before {
+            width: 24px;
+            height: 24px;
+            top: 0;
+            left: 0;
+        }
+
+        .logo-icon::after {
+            width: 16px;
+            height: 16px;
+            top: 10px;
+            left: 12px;
+            opacity: 0.8;
+        }
+
+        .logo-icon span {
+            width: 10px;
+            height: 10px;
+            top: 20px;
+            left: 24px;
+            opacity: 0.6;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--white);
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-content h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+
+        .brand-content p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .feature-item {
+            background: rgba(255,255,255,0.15);
+            padding: 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .feature-item p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            margin: 0;
+        }
+
+        .brand-tagline {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 右侧 Key 管理区 */
+        .key-side {
+            background: var(--white);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部用户信息 */
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .page-title h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--light-gray-2);
+            border-radius: 50px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--medium-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            border-color: #ff5252;
+            color: #ff5252;
+        }
+
+        /* Key 生成表单 */
+        .key-generator {
+            background: var(--light-gray);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .key-generator h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            background: var(--white);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px rgba(143, 232, 62, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--medium-gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            color: var(--dark-gray);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-green-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(143, 232, 62, 0.3);
+        }
+
+        .key-display {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--white);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .key-display.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .key-label {
+            font-size: 11px;
+            color: var(--medium-gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .key-value {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .key-value code {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--light-gray);
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            color: var(--primary-green-dark);
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            padding: 10px 16px;
+            background: var(--primary-green);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary-green-dark);
+        }
+
+        /* Key 列表 */
+        .keys-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--dark-gray);
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--light-gray);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .key-item:hover {
+            background: var(--light-gray-2);
+        }
+
+        .key-item-info {
+            flex: 1;
+        }
+
+        .key-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .key-item-meta {
+            font-size: 12px;
+            color: var(--medium-gray);
+        }
+
+        .key-item-key {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            color: var(--medium-gray);
+            margin-right: 16px;
+            padding: 4px 10px;
+            background: var(--white);
+            border-radius: 4px;
+        }
+
+        .btn-delete {
+            padding: 6px 14px;
+            background: rgba(255, 82, 82, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: #ff5252;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 82, 82, 0.2);
+        }
+
+        /* 底部 */
+        .footer-note {
+            margin-top: auto;
+            padding-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--medium-gray);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-side {
+                display: none;
+            }
+            
+            .key-side {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧品牌区 -->
+        <div class="brand-side">
+            <div class="logo">
+                <div class="logo-icon">
+                    <span></span>
+                </div>
+                <div class="logo-text">SOYOUNG CLINIC</div>
+            </div>
+
+            <div class="brand-content">
+                <h1>API Key 管理</h1>
+                <p>新氧青春 × OpenClaw<br>智能医美解决方案</p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>智能问答</h4>
+                        <p>AI 大模型快速响应</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>个性化推荐</h4>
+                        <p>智能匹配方案</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>内容生成</h4>
+                        <p>自动营销文案</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>全流程覆盖</h4>
+                        <p>咨询到术后</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-tagline">Genuine Care, Nature Beauty</div>
+        </div>
+
+        <!-- 右侧 Key 管理区 -->
+        <div class="key-side">
+            <!-- 顶部用户信息 -->
+            <div class="user-header">
+                <div class="page-title">
+                    <h2>API Keys</h2>
+                    <p>管理您的访问密钥</p>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <img src="" alt="头像" class="user-avatar" id="userAvatar">
+                        <span class="user-name" id="userName">用户</span>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">退出</button>
+                </div>
+            </div>
+
+            <!-- Key 生成表单 -->
+            <div class="key-generator">
+                <h3>创建新的 API Key</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>应用名称 *</label>
+                        <input type="text" id="appName" placeholder="例如：我的应用">
+                    </div>
+                    <div class="form-group">
+                        <label>使用场景</label>
+                        <input type="text" id="usage" placeholder="可选描述">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="generateKey()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    生成 API Key
+                </button>
+
+                <div class="key-display" id="keyDisplay">
+                    <div class="key-label">新生成的 API Key</div>
+                    <div class="key-value">
+                        <code id="newKey">sk-yc-xxxx xxxx xxxx xxxx</code>
+                        <button class="btn-copy" onclick="copyKey()">复制</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key 列表 -->
+            <div class="keys-section">
+                <h3>我的 API Keys</h3>
+                <div id="keysContainer">
+                    <!-- 动态生成的 Key 列表 -->
+                </div>
+            </div>
+
+            <div class="footer-note">
+                © 2026 新氧青春 SOYOUNG CLINIC. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 检查登录状态
+        function checkLogin() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = 'login.html';
+                return null;
+            }
+            return JSON.parse(user);
+        }
+
+        // 初始化用户信息
+        function initUser() {
+            const user = checkLogin();
+            if (!user) return;
+
+            document.getElementById('userAvatar').src = user.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=default';
+            document.getElementById('userName').textContent = user.name || '用户';
+        }
+
+        // 退出登录
+        function handleLogout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // 模拟存储的 keys
+        let apiKeys = [
+            { id: 1, name: '测试应用', usage: '开发测试', key: 'sk-yc-test-xxxxx-xxxxx', date: '2026-03-11', userId: 'current' },
+            { id: 2, name: '生产环境', usage: '正式业务', key: 'sk-yc-prod-xxxxx-xxxxx', date: '2026-03-10', userId: 'current' }
+        ];
+
+        function generateKey() {
+            const appName = document.getElementById('appName').value.trim();
+            const usage = document.getElementById('usage').value.trim();
+            
+            if (!appName) {
+                alert('请输入应用名称');
+                return;
+            }
+
+            // 生成随机 Key
+            const randomPart = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const newKey = `sk-yc-${randomPart.substring(0, 12)}-${randomPart.substring(12, 24)}`;
+            const today = new Date().toISOString().split('T')[0];
+
+            // 添加到列表
+            const user = checkLogin();
+            apiKeys.unshift({
+                id: Date.now(),
+                name: appName,
+                usage: usage || '未描述',
+                key: newKey,
+                date: today,
+                userId: user?.email || 'current'
+            });
+
+            // 显示新生成的 Key
+            document.getElementById('newKey').textContent = newKey;
+            document.getElementById('keyDisplay').classList.add('show');
+
+            // 重新渲染列表
+            renderKeys();
+
+            // 清空表单
+            document.getElementById('appName').value = '';
+            document.getElementById('usage').value = '';
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('newKey').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert('已复制到剪贴板');
+            });
+        }
+
+        function deleteKey(id) {
+            if (confirm('确定要删除这个 API Key 吗？')) {
+                apiKeys = apiKeys.filter(k => k.id !== id);
+                renderKeys();
+            }
+        }
+
+        function renderKeys() {
+            const container = document.getElementById('keysContainer');
+            container.innerHTML = apiKeys.map(k => `
+                <div class="key-item">
+                    <div class="key-item-info">
+                        <div class="key-item-name">${k.name}</div>
+                        <div class="key-item-meta">${k.date} · ${k.usage}</div>
+                    </div>
+                    <code class="key-item-key">${k.key.substring(0, 18)}...</code>
+                    <button class="btn-delete" onclick="deleteKey(${k.id})">删除</button>
+                </div>
+            `).join('');
+        }
+
+        // 初始化
+        initUser();
+        renderKeys();
+    </script>
+</body>
+</html>
